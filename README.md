@@ -11,4 +11,4 @@ To use this frontend, you also need an API backend. There are two options:
 
 Then run this locally with
 
-``python -m SimpleServer 4000``
+``python -m SimpleHTTPServer 4000``
