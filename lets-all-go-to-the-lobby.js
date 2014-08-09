@@ -1,5 +1,4 @@
-function loadData () {
-
+$(document).ready(function() {
   d3.json("http://localhost:3000/lobbymoney", function(data) {
     window.data = data;
     console.log(data);
@@ -59,6 +58,4 @@ function loadData () {
       .append("td")
           .text(function(d) { return d.value; });
   });
-
-
-}
+});
