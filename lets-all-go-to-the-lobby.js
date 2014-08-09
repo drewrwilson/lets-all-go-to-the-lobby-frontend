@@ -6,11 +6,13 @@ function loadData () {
 
 
   //the columns that we'd like to display
-  var columns = ['lobbyist_naml','lobbyist_namf'];
+  var columns = ['lobbyist_naml','lobbyist_namf', 'amount'];
 
   //add data to the html
   var results = d3.select("#results").html(null),
-        table = results.append("table").attr("class", "tblResults"),
+        table = results.append("table")
+                  .attr("class", "tblResults")
+                  .attr("class", "table"),
         thead = table.append("thead"),
         tbody = table.append("tbody");
 
