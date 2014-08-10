@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  d3.json("http://localhost:3000/lobbymoney", function(data) {
+  d3.json("http://jk.xvm.mit.edu:3000/", function(data) {
     window.data = data;
     console.log(data);
 
