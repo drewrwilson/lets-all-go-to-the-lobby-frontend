@@ -1,11 +1,24 @@
-$(document).ready(function() {
-  d3.json("http://localhost:3000/lobbymoney", function(data) {
-    window.data = data;
-    console.log(data);
+var BASE_URL = 'http://jk.xvm.mit.edu:3000';
 
+$(document).ready(function() {
+  d3.json(BASE_URL + "/lobbymoney", function(data) {
+    console.log(data)
+    window.data = data;
 
   //the columns that we'd like to display
-  var columns = ['lobbyist_naml','lobbyist_namf', 'amount'];
+  var columns = [{
+    obj_key: 'lobbyist_naml', 
+    readable: 'First Name',
+  },
+  {
+    obj_key: 'lobbyist_namf', 
+    readable:'Last Name'
+  },
+  {
+    obj_key: 'amount', 
+    readable:'Contribution Amount'
+    
+  }];
 
   //add data to the html
   var results = d3.select("#results").html(null),
@@ -15,20 +28,21 @@ $(document).ready(function() {
         thead = table.append("thead"),
         tbody = table.append("tbody");
 
-  // append the header row
+  // Table headers
   thead.append("tr")
       .selectAll("th")
       .data(columns)
       .enter()
       .append("th")
-          .text(function(column) { return column; })
+          .text(function(d) { return d.readable; })
+      // event handlers
       .on("click", function(d){
         d3.select('#results table tbody')
             .selectAll('tr').sort(function(a, b){
               if (ascending)
-                return d3.ascending(a[d], b[d]);
+                return d3.ascending(a[d.obj_key], b[d.obj_key]);
               else
-                return d3.descending(a[d], b[d]);
+                return d3.descending(a[d.obj_key], b[d.obj_key]);
           });
           //flip the bit:
           ascending = !ascending;
@@ -38,10 +52,11 @@ $(document).ready(function() {
   //append some data
     //initialize ascending as true
   var ascending = true;
+
   //add sort icon to the list
   d3.selectAll('#results table tr th').append('span').html(' <i class="fa fa-sort"></i>')
 
-  // create a row for each object in the data
+  // Table body
   var rows = tbody.selectAll("tr")
       .data(data)
       .enter()
@@ -50,8 +65,8 @@ $(document).ready(function() {
   // create a cell in each row for each column
   var cells = rows.selectAll("td")
       .data(function(row) {
-          return columns.map(function(column) {
-              return {column: column, value: row[column]};
+          return _.map(columns, function(column) {
+            return { column: column.obj_key, value: row[column.obj_key] };
           });
       })
       .enter()
